@@ -29,7 +29,7 @@ pipeline {
                         sshPublisher(publishers: [sshPublisherDesc(configName: remote.name, transfers: [
                             sshTransfer(execCommand: "mkdir -p /home/user/build/",
                                         execTimeout: 120000),
-                            sshTransfer(execCommand: "scp -i $keyFile */target/*.jar ${remote.user}@${remote.host}:/home/user/build/",
+                            sshTransfer(execCommand: "scp -v -i $keyFile */target/*.jar ${remote.user}@${remote.host}:/home/user/build/",
                                         execTimeout: 120000)
                         ])])
                     }
