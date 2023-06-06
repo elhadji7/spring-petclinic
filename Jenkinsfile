@@ -25,7 +25,7 @@ pipeline {
                              identityFile: keyFile,
                              allowAnyHosts: true
                           ]
-                          sshCommand remote: remote, command: 'mkdir /home/user/built'
+                          sshCommand remote: remote, command: ' sudo mkdir /home/user/built'
                           sshCommand remote: remote, command: 'for i in {1..5}; do echo -n "loop$i"; hostname -I; sleep 1; done'
                           writeFile file: 'abc.sh', text: 'ls -lrt'
                           sshScript remote: remote, script: 'sh abc.sh'
