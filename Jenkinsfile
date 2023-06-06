@@ -17,22 +17,21 @@ pipeline {
          stage('Deploy') {
              steps {
                  script {
+                     def remote = [
+                         name: 'DistantServ',
+                         host: '192.168.196.153',
+                         user: 'user',
+                         port: 22,
+                         allowAnyHosts: true
+                     ]
                      withCredentials([sshUserPrivateKey(credentialsId: 'SSHkeysPEM', keyFileVariable: 'keyFile', passphraseVariable: 'pass', usernameVariable: 'user')]) {
-                         def remote = [
-                             name: 'distantServ',
-                             host: '192.168.196.153',
-                             user: user,
-                             identityFile: keyFile,
-                             allowAnyHosts: true
-                          ]
-                          sshCommand remote: remote, command: 'ls -ltr'
-                          sshCommand remote: remote, command: "for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done"
-                          writeFile file: 'abc.sh', text: 'ls -lrt'
-                          sshScript remote: remote, script: 'abc.sh'
-                          sshPut remote: remote, from: '*/target/*.jar', into: '/home/user/built/'
-                      }
-                   }
-               }
-            }
-    }
+                         sshPublisher(publishers: [sshPublisherDesc(configName: remote.name, transfers: [
+                             sshTransfer(cleanRemote: false, execCommand: "mkdir -p /home/user/build/"),
+                             sshTransfer(cleanRemote: false, execCommand: "scp -i $keyFile target/*.jar ${remote.user}@${remote.host}:/home/user/build/")
+                         ])])
+                     }
+                  }  
+              }
+          }
+     }
 }
