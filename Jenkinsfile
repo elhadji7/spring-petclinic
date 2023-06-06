@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     def remote = [:]
-                    remote.name = 'distantServ'
+                    remote.name = 'DistantServer'
                     remote.host = '192.168.196.153'
                     remote.user = 'user'
                     remote.port = 22
