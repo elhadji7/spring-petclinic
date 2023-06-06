@@ -19,7 +19,7 @@ pipeline {
                  script {
                      withCredentials([sshUserPrivateKey(credentialsId: 'SSHkeysPEM', keyFileVariable: 'keyFile', passphraseVariable: 'pass', usernameVariable: 'user')]) {
                          def remote = [
-                             name: 'distantServ',
+                             name: 'DistantServer',
                              host: '192.168.196.153',
                              user: user,
                              identityFile: keyFile,
