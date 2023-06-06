@@ -2,12 +2,13 @@ pipeline {
     agent any
     
     stages {
-        stage('Checkout') {
+        stage('Récupération du code') {
             steps {
-                git 'https://github.com/elhadji7/spring-petclinic.git'
+                git branch: 'main',
+         credentialsId: 'GithubCredentials',
+          url: 'https://github.com/elhadji7/spring-petclinic.git'
             }
         }
-        
         stage('Build') {
             steps {
                 sh 'mvn clean package -f pom.xml'
